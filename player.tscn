@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://bx6qg8afotdvb"]
+
+[ext_resource type="PackedScene" uid="uid://bq86r4yll8po" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_fullglove_low.tscn" id="1_onrkg"]
+[ext_resource type="PackedScene" uid="uid://xqimcf20s2jp" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/right_fullglove_low.tscn" id="2_i3pqv"]
+
+[node name="XROrigin3D" type="XROrigin3D" unique_id=599333959]
+
+[node name="XRCamera3D" type="XRCamera3D" parent="." unique_id=1160500187]
+
+[node name="LeftHand" type="XRController3D" parent="." unique_id=1493370970]
+tracker = &"left_hand"
+
+[node name="LeftHand" parent="LeftHand" unique_id=1024899054 instance=ExtResource("1_onrkg")]
+
+[node name="RightHand" type="XRController3D" parent="." unique_id=1959373931]
+tracker = &"right_hand"
+
+[node name="RightHand" parent="RightHand" unique_id=1907142543 instance=ExtResource("2_i3pqv")]
