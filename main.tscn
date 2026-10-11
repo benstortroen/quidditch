@@ -17,6 +17,13 @@ background_mode = 2
 sky = SubResource("Sky_h2yge")
 glow_enabled = true
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_k5fmg"]
+size = Vector3(100, 1, 100)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_k5fmg"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_k5fmg"]
+
 [node name="Main" type="Node3D" unique_id=854992031]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=384671755]
@@ -29,9 +36,26 @@ shadow_enabled = true
 [node name="StartXR" parent="." unique_id=1647052892 instance=ExtResource("1_0xm2m")]
 
 [node name="XROrigin3D" parent="." unique_id=599333959 instance=ExtResource("2_h2yge")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8928753, 0)
 
-[node name="quidditch_pitch" parent="." unique_id=929583728 instance=ExtResource("1_h2yge")]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 6.554778, 0)
+[node name="Quidditch Pitch" type="Node3D" parent="." unique_id=480143268]
+
+[node name="quidditch_pitch" parent="Quidditch Pitch" unique_id=929583728 instance=ExtResource("1_h2yge")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 7.3446774, 0)
+
+[node name="Floor" type="StaticBody3D" parent="Quidditch Pitch" unique_id=358204120]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Quidditch Pitch/Floor" unique_id=1208511395]
+shape = SubResource("BoxShape3D_k5fmg")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="Quidditch Pitch" unique_id=996385751]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Quidditch Pitch/RigidBody3D" unique_id=31061574]
+shape = SubResource("SphereShape3D_k5fmg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Quidditch Pitch/RigidBody3D" unique_id=594627945]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.289454, 4.5705037, 4.7683716e-07)
+mesh = SubResource("SphereMesh_k5fmg")
 
 [node name="firebolt" parent="." unique_id=376402646 instance=ExtResource("4_1bvp3")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -1.4735737, 0, 0.124387264)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -1.4735737, 0.8928753, 0.124387264)
