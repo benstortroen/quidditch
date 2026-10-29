@@ -51,7 +51,7 @@ shape = SubResource("BoxShape3D_k5fmg")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8928753, 0)
 
 [node name="Broomstick" parent="." unique_id=476937518 instance=ExtResource("4_1bvp3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.026454926, 0.9396881, -4.2597923)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1, -5)
 
 [node name="Ball" type="RigidBody3D" parent="." unique_id=996385751]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.94205, 5.2423105, 0)

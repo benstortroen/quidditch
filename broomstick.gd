@@ -7,7 +7,7 @@ var state := State.UNMOUNTED
 var grab_origin : Vector3
 
 # Stats
-var speed = 20
+var speed = 0
 var max_speed = 20 
 var max_pitch = deg_to_rad(60)
 var pitch_rate = 2
@@ -76,13 +76,18 @@ func _hover(delta: float) -> void:
 	
 func _fly(delta: float) -> void:
 	# slowly decelerate if idle
-	velocity = velocity.move_toward(Vector3(0, 0, 0), delta)
+	velocity = velocity.move_toward(Vector3(0, 0, 0), delta * 5)
 	
 	# TODO: move broomstick forward in joystick's y direction
 	var stick : Vector2 = LeftHand.get_vector2("primary")
 	if stick.y != 0:
 		var forward = -global_transform.basis.z 
-		velocity = forward * stick.y * speed
+		velocity = forward * stick.y * max_speed
+	
+	# TODO: rotate broom with joystick x axis input
+	if stick.x != 0:
+		rotation.y -= stick.x * yaw_rate * delta
+		XROrigin.rotate_y(-stick.x * yaw_rate * delta)
 	
 	# TODO: rotate broom to steering hand
 	if state == State.STEERING:
@@ -97,7 +102,7 @@ func _fly(delta: float) -> void:
 	move_and_slide()
 	
 	# TODO: bind player head to broomstick seat 
-	var seat_offset : Vector3 = Vector3(0, 2, 0)
+	var seat_offset : Vector3 = Vector3(0, 1, 0)
 	XROrigin.global_position = global_position + seat_offset
 	
 # ==============================================================================
