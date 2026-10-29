@@ -81,8 +81,7 @@ func _fly(delta: float) -> void:
 	# TODO: move broomstick forward in joystick's y direction
 	var stick : Vector2 = LeftHand.get_vector2("primary")
 	if stick.y != 0:
-		var forward = -global_transform.basis.z 
-		velocity = forward * stick.y * max_speed
+		speed = stick.y * abs(stick.y) * max_speed
 	
 	# TODO: rotate broom with joystick x axis input
 	if stick.x != 0:
@@ -102,7 +101,7 @@ func _fly(delta: float) -> void:
 	 	# rotate player's body along with broom
 		XROrigin.rotate_y(-offset.x * yaw_rate * delta)
 		
-		
+	velocity = speed * -global_transform.basis.z
 	move_and_slide()
 	
 	# TODO: bind player head to broomstick seat 
