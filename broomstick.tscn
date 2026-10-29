@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://8t3k6lyo6krf"]
+
+[ext_resource type="Script" uid="uid://dhl7bgvcyjl24" path="res://broomstick.gd" id="1_behhg"]
+[ext_resource type="PackedScene" uid="uid://2ag5kcylgjrl" path="res://models/firebolt/firebolt.blend" id="1_f061u"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_k5fmg"]
+radius = 0.18945313
+height = 1.7543945
+
+[node name="Broomstick" type="CharacterBody3D" unique_id=2069245268 groups=["broomstick"]]
+script = ExtResource("1_behhg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1873802946]
+transform = Transform3D(0.99999994, -3.7252903e-09, 9.313226e-10, 0, -0.23371983, -0.97230405, 0, 0.97230405, -0.23371981, -7.450581e-09, 0.66974163, -1.6537675)
+shape = SubResource("CapsuleShape3D_k5fmg")
+
+[node name="FireboltModel" parent="." unique_id=836513911 instance=ExtResource("1_f061u")]
+transform = Transform3D(0.9985722, 0, -0.053420085, 0, 1, 0, 0.053420085, 0, 0.9985722, 0, 0, 0)
+
+[node name="GroundRay" type="RayCast3D" parent="." unique_id=1509243676]
+
+[node name="Timer" type="Timer" parent="." unique_id=898050486]
+wait_time = 0.5
+autostart = true
+
+[node name="GrabTrigger" type="Area3D" parent="." unique_id=452973932]
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="GrabTrigger" unique_id=891977479]
+transform = Transform3D(0.99999994, -3.7252903e-09, 9.313226e-10, 0, -0.23371983, -0.97230405, 0, 0.97230405, -0.23371981, -7.450581e-09, 0.66974163, -1.6537675)
+shape = SubResource("CapsuleShape3D_k5fmg")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

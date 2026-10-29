@@ -3,8 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://b7ngbssd8ye2g" path="res://models/quidditch-pitch/quidditch_pitch.blend" id="1_h2yge"]
 [ext_resource type="PackedScene" uid="uid://bx6qg8afotdvb" path="res://player.tscn" id="2_h2yge"]
-[ext_resource type="PackedScene" uid="uid://2ag5kcylgjrl" path="res://models/firebolt/firebolt.blend" id="4_1bvp3"]
-[ext_resource type="Script" uid="uid://df32vwn52owv8" path="res://firebolt.gd" id="5_lquwl"]
+[ext_resource type="PackedScene" uid="uid://8t3k6lyo6krf" path="res://broomstick.tscn" id="4_1bvp3"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0xm2m"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -36,10 +35,9 @@ shadow_enabled = true
 
 [node name="StartXR" parent="." unique_id=1647052892 instance=ExtResource("1_0xm2m")]
 
-[node name="XROrigin3D" parent="." unique_id=599333959 instance=ExtResource("2_h2yge")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8928753, 0)
-
 [node name="Quidditch Pitch" type="Node3D" parent="." unique_id=480143268]
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
 
 [node name="quidditch_pitch" parent="Quidditch Pitch" unique_id=929583728 instance=ExtResource("1_h2yge")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 7.3446774, 0)
@@ -49,16 +47,18 @@ transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 7.3446774, 0)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Quidditch Pitch/Floor" unique_id=1208511395]
 shape = SubResource("BoxShape3D_k5fmg")
 
-[node name="RigidBody3D" type="RigidBody3D" parent="Quidditch Pitch" unique_id=996385751]
+[node name="XROrigin3D" parent="." unique_id=599333959 instance=ExtResource("2_h2yge")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8928753, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Quidditch Pitch/RigidBody3D" unique_id=31061574]
+[node name="Broomstick" parent="." unique_id=476937518 instance=ExtResource("4_1bvp3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.026454926, 0.9396881, -4.2597923)
+
+[node name="Ball" type="RigidBody3D" parent="." unique_id=996385751]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.94205, 5.2423105, 0)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ball" unique_id=31061574]
 shape = SubResource("SphereShape3D_k5fmg")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Quidditch Pitch/RigidBody3D" unique_id=594627945]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.289454, 4.5705037, 4.7683716e-07)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ball" unique_id=594627945]
 mesh = SubResource("SphereMesh_k5fmg")
-
-[node name="firebolt" parent="." unique_id=376402646 node_paths=PackedStringArray("player") instance=ExtResource("4_1bvp3")]
-transform = Transform3D(-0.5, 0, -4.371139e-08, 0, 0.5, 0, 4.371139e-08, 0, -0.5, -1.4735737, 0.8928753, 0.124387264)
-script = ExtResource("5_lquwl")
-player = NodePath("../XROrigin3D")
