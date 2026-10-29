@@ -8,7 +8,7 @@ var grab_origin : Vector3
 
 # Stats
 var speed = 0
-var max_speed = 20 
+var max_speed = 50
 var max_pitch = deg_to_rad(60)
 var pitch_rate = 5
 var yaw_rate = 5
@@ -19,6 +19,7 @@ var yaw_rate = 5
 @onready var LeftHand : XRController3D = XROrigin.get_node("LeftHand")
 @onready var RightHand : XRController3D = XROrigin.get_node("RightHand")
 @onready var GroundRay : RayCast3D = $GroundRay
+@onready var WindSFX : AudioStreamPlayer3D = $WindSFX
 
 # ==============================================================================
 # Read input from VR Controllers to control broom's state
@@ -57,6 +58,11 @@ func _physics_process(delta: float) -> void:
 			_hover(delta)
 		State.MOUNTED, State.STEERING:
 			_fly(delta)
+			
+	# scale wind sfx based on velocity (max speed ~ 25)
+	var audio_weight = velocity.length() / 25
+	WindSFX.pitch_scale = lerp(1.0, 2.0, audio_weight)
+	WindSFX.volume_linear = lerp(0.1, 0.5, audio_weight)
 
 func _hover(delta: float) -> void:
 	# slowly fall to ground until ray hits
@@ -75,23 +81,29 @@ func _hover(delta: float) -> void:
 		
 	
 func _fly(delta: float) -> void:
-	# slowly decelerate if idle
-	velocity = velocity.move_toward(Vector3(0, 0, 0), delta * 5)
 	
 	# TODO: move broomstick forward in joystick's y direction
 	var stick : Vector2 = LeftHand.get_vector2("primary")
-	if stick.y != 0:
-		speed = stick.y * abs(stick.y) * max_speed
+	speed = stick.y * abs(stick.y) * max_speed
+	
+	# speed climbs when moving down
+	speed -= sin(rotation.x) * 200 * delta
+	print(-sin(rotation.x) * 9.8 * 20 * delta)
+	
+	# coasting: slow deceleration
+	var rate = 1.0
+	if speed > 0: 
+		rate = 20
+	elif speed < 0:
+		rate = 30
+	
 	
 	# TODO: rotate broom with joystick x axis input
-	if stick.x != 0:
-		rotation.y -= stick.x * yaw_rate * 0.5 * delta
-		XROrigin.rotate_y(-stick.x * yaw_rate * 0.5 * delta)
+	rotation.y -= stick.x * yaw_rate * 0.5 * delta
+	XROrigin.rotate_y(-stick.x * yaw_rate * 0.5 * delta)
 	
 	# TODO: rotate broom to steering hand
 	if state == State.STEERING:
-		#XROrigin.rotation.y = rotation.y
-		#look_at(LeftHand.global_position, Vector3.UP)
 		
 		var offset := to_local(LeftHand.global_position) - grab_origin
 		rotation.x += offset.y * pitch_rate * delta
@@ -101,7 +113,7 @@ func _fly(delta: float) -> void:
 	 	# rotate player's body along with broom
 		XROrigin.rotate_y(-offset.x * yaw_rate * delta)
 		
-	velocity = speed * -global_transform.basis.z
+	velocity = velocity.move_toward(speed * -global_transform.basis.z, delta * rate)
 	move_and_slide()
 	
 	# TODO: bind player head to broomstick seat 
@@ -114,4 +126,4 @@ func _fly(delta: float) -> void:
 # ==============================================================================
 # Debug timer to show relevant info
 func _on_timer_timeout() -> void:
-	print("Velocity: " + str(velocity))
+	print("Velocity: " + str(velocity.length()))
