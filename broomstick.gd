@@ -24,6 +24,7 @@ var yaw_rate = 5
 # ==============================================================================
 # Read input from VR Controllers to control broom's state
 func _ready():
+	process_physics_priority = -100   # move broom + player before XRToolsHand (-70) copies the controllers
 	LeftHand.button_pressed.connect(_on_button_pressed)
 	LeftHand.button_released.connect(_on_button_released)
 	
