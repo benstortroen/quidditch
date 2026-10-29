@@ -12,11 +12,11 @@ transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 script = ExtResource("1_behhg")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1873802946]
-transform = Transform3D(0.99999994, -3.7252903e-09, 9.313226e-10, 0, -0.23371983, -0.97230405, 0, 0.97230405, -0.23371981, -7.450581e-09, 0.66974163, -1.6537675)
+transform = Transform3D(0.99999994, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -7.450581e-09, 0.008362532, -1.6537675)
 shape = SubResource("CapsuleShape3D_k5fmg")
 
 [node name="FireboltModel" parent="." unique_id=836513911 instance=ExtResource("1_f061u")]
-transform = Transform3D(0.9985722, 0, -0.053420085, 0, 1, 0, 0.053420085, 0, 0.9985722, 0, 0, 0)
+transform = Transform3D(0.9984407, 0.013787856, -0.054091915, 0, 0.9690157, 0.24699901, 0.0558215, -0.24661388, 0.9675048, 0, -0.22780833, 0)
 
 [node name="GroundRay" type="RayCast3D" parent="." unique_id=1509243676]
 
@@ -26,8 +26,8 @@ autostart = true
 
 [node name="GrabTrigger" type="Area3D" parent="." unique_id=452973932]
 
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="GrabTrigger" unique_id=891977479]
-transform = Transform3D(0.99999994, -3.7252903e-09, 9.313226e-10, 0, -0.23371983, -0.97230405, 0, 0.97230405, -0.23371981, -7.450581e-09, 0.66974163, -1.6537675)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GrabTrigger" unique_id=1970343743]
+transform = Transform3D(0.99999994, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -7.450581e-09, 0.008362532, -1.6537675)
 shape = SubResource("CapsuleShape3D_k5fmg")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
