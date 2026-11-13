@@ -85,10 +85,9 @@ func _hover(delta: float) -> void:
 		
 	
 func _fly(delta: float) -> void:
-	
-	# TODO: move broomstick forward in joystick's y direction
-	var stick : Vector2 = LeftHand.get_vector2("primary")
-	speed = stick.y * abs(stick.y) * max_speed
+	# move broomstick forward on trigger click
+	var trigger : float = LeftHand.get_float("trigger")
+	speed = trigger * abs(trigger) * max_speed
 	
 	# speed climbs when moving down
 	speed -= sin(rotation.x) * 200 * delta
@@ -101,22 +100,27 @@ func _fly(delta: float) -> void:
 	elif speed < 0:
 		rate = 30
 	
+	# Get joystick input as Vector2
+	var stick : Vector2 = LeftHand.get_vector2("primary")
 	
-	# TODO: rotate broom with joystick x axis input
+	# TODO: rotate broom (yaw) with joystick x axis input
 	rotation.y -= stick.x * yaw_rate * 0.5 * delta
 	XROrigin.rotate_y(-stick.x * yaw_rate * 0.5 * delta)
+	
+	# TODO: rotate broom (pitch) with joystick y axis input
+	rotation.x += stick.y * pitch_rate * 0.5 * delta
 	
 	# TODO: rotate broom to steering hand
 	if state == State.STEERING:
 		
 		var offset := to_local(LeftHand.global_position) - grab_origin
 		rotation.x += offset.y * pitch_rate * delta
-		rotation.x = clampf(rotation.x, -max_pitch, max_pitch)
 		rotation.y += -offset.x * yaw_rate * delta
 		rotation.z = 0.0 # prevent roll from happening
 	 	# rotate player's body along with broom
 		XROrigin.rotate_y(-offset.x * yaw_rate * delta)
 		
+	rotation.x = clampf(rotation.x, -max_pitch, max_pitch)
 	velocity = velocity.move_toward(speed * -global_transform.basis.z, delta * rate)
 	move_and_slide()
 	
