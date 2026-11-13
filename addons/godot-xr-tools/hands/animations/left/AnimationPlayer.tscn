@@ -75,7 +75,5 @@ _data = {
 &"Thumb": ExtResource("35_huikq")
 }
 
-[node name="AnimationPlayer" type="AnimationPlayer"]
-libraries = {
-"": SubResource("AnimationLibrary_kw48d")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" unique_id=1456630719]
+libraries/ = SubResource("AnimationLibrary_kw48d")

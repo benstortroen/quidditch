@@ -5,12 +5,13 @@ enum State { UNMOUNTED, MOUNTED, STEERING }
 # Variables
 var state := State.UNMOUNTED
 var grab_origin : Vector3
+var head_offset : Vector3   # head position relative to XROrigin (origin-local, horizontal) captured on mount
 
 # Stats
 var speed = 0
 var max_speed = 50
 var max_pitch = deg_to_rad(60)
-var pitch_rate = 5
+var pitch_rate = 10
 var yaw_rate = 5
 
 # Compmemts
@@ -18,6 +19,7 @@ var yaw_rate = 5
 @onready var PlayerBody : XRToolsPlayerBody = XROrigin.get_node("PlayerBody")
 @onready var LeftHand : XRController3D = XROrigin.get_node("LeftHand")
 @onready var RightHand : XRController3D = XROrigin.get_node("RightHand")
+@onready var XRCamera : XRCamera3D = XROrigin.get_node("XRCamera3D")
 @onready var GroundRay : RayCast3D = $GroundRay
 @onready var WindSFX : AudioStreamPlayer3D = $WindSFX
 
@@ -37,6 +39,7 @@ func _on_button_pressed(action: String) -> void:
 	match action:
 		"ax_button":
 			PlayerBody.enabled = false
+			_calibrate_head()
 			state = State.MOUNTED
 		"by_button":
 			PlayerBody.enabled = true
@@ -118,12 +121,19 @@ func _fly(delta: float) -> void:
 	move_and_slide()
 	
 	# TODO: bind player head to broomstick seat 
+	# offset by where the head sits in the play space so the HEAD (not the play-space center) lands on the seat
 	var seat_offset : Vector3 = Vector3(0, -0.5, 0)
-	XROrigin.global_position = global_position + seat_offset
+	XROrigin.global_position = global_position + seat_offset - XROrigin.global_basis * head_offset
 	
 # ==============================================================================
 
 	
+# Record where the player's head is relative to the XROrigin (play-space center).
+# Done once on mount so the player can still lean/look around afterwards.
+func _calibrate_head() -> void:
+	head_offset = XRCamera.position
+	head_offset.y = 0.0
+
 # ==============================================================================
 # Debug timer to show relevant info
 func _on_timer_timeout() -> void:
